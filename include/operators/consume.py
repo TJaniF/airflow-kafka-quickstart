@@ -158,7 +158,6 @@ class ConsumeFromTopicOperator(BaseOperator):
 
 
             msgs = consumer.consume(num_messages=batch_size, timeout=self.poll_timeout)
-            print(msgs)
             messages_left -= len(msgs)
             messages_processed += len(msgs)
 
@@ -168,9 +167,7 @@ class ConsumeFromTopicOperator(BaseOperator):
                 break
 
             if self.apply_function:
-                print("apply_function:", self.apply_function)
                 for m in msgs:
-                    print("m is"  + str(m))
                     apply_callable(m)
 
             if self.apply_function_batch:
