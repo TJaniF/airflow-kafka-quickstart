@@ -1,0 +1,7 @@
+.git
+.DS_Store # macOS specific ignore
+.env
+__pycache__/
+astro
+**__pycache__
+**.DS_Store
