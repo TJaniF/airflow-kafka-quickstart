@@ -1,1 +1,2 @@
-confluent-kafka==1.8.2
+confluent-kafka==2.1.1
+apache-airflow-providers-apache-kafka==1.0.0
