@@ -1,0 +1,7 @@
+# These categories will be applied to all DAGs in the repo.
+categories:
+  - ETL/ELT
+# List of DAGs that should be published to the Astronomer Registry.
+dags:
+  - path: dags/produce_consume_treats.py
+  - path: dags/listen_to_the_stream.py

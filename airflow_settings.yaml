@@ -15,3 +15,11 @@ airflow:
         security.protocol: PLAINTEXT
         enable.auto.commit: False
         auto.offset.reset: "beginning"
+    - conn_id: kafka_listener
+      conn_type: general
+      conn_extra:
+        bootstrap.servers: kafka:19092
+        group.id: group_2
+        security.protocol: PLAINTEXT
+        enable.auto.commit: False
+        auto.offset.reset: "beginning"

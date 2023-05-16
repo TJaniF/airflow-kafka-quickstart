@@ -1,47 +1,49 @@
-Overview
-========
+# Overview
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+Welcome to this ready to run repository to get started with the [Apache Airflow Kafka provider](https://airflow.apache.org/docs/apache-airflow-providers-apache-kafka/stable/index.html)! :rocket:
 
-Project Contents
-================
+This repository assumes you have basic knowledge of Apache Kafka and Apache Airflow. You can find resources on these tools in the [Resouces](#resources) section below.
 
-Your Astro project contains the following files and folders:
+This repository contains 3 DAGs:
 
-- dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes an example DAG that runs every 30 minutes and simply prints the current date. It also includes an empty 'my_custom_function' that you can fill out to execute Python code.
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
+- `produce_consume_treats`: This DAG will produce NUMBER_OF_TREATS messages to a local Kafka cluster. Run it manually to produce and consume new messages.
+- `listen_to_the_stream`: This DAG will continuously listen to a topic in a local Kafka cluster and run the `event_triggered_function` whenever a message causes the `apply_function` to return a value. Unpause this DAG to have it continuously run.
+- `walking_your_pet`: This DAG is the downstream DAG the given `event_triggered_function` in the `listen_to_the_stream` DAG will trigger. Unpause this DAG to have it ready to be triggered by a TriggerDagRunOperator in the upstream DAG.
 
-Deploy Your Project Locally
-===========================
+# How to use this repository
 
-1. Start Airflow on your local machine by running 'astro dev start'.
+This repository is designed to spin up both a local Kafka cluster and a local Astro project and connect them automatically. Note that it sometimes takes a minute longer for the Kafka cluster to be fully started.
 
-This command will spin up 4 Docker containers on your machine, each for a different Airflow component:
+## Option 1: Use GitHub Codespaces
 
-- Postgres: Airflow's Metadata Database
-- Webserver: The Airflow component responsible for rendering the Airflow UI
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+Run this Airflow project without installing anything locally.
 
-2. Verify that all 4 Docker containers were created by running 'docker ps'.
+1. Fork this repository.
+2. Create a new GitHub codespaces project on your fork. Make sure it uses at least 4 cores!
 
-Note: Running 'astro dev start' will start your project with the Airflow Webserver exposed at port 8080 and Postgres exposed at port 5432. If you already have either of those ports allocated, you can either stop your existing Docker containers or change the port.
+    ![Fork repo and create a codespaces project](src/fork_and_codespaces.png)
 
-3. Access the Airflow UI for your local Airflow project. To do so, go to http://localhost:8080/ and log in with 'admin' for both your Username and Password.
+3. After creating the codespaces project the Astro CLI will automatically start up all necessary Airflow components as well as the streamlit app. This can take a few minutes. 
+4. Once the Airflow project has started access the Airflow UI by clicking on the **Ports** tab and opening the forward URL for port 8080.
 
-You should also be able to access your Postgres Database at 'localhost:5432/postgres'.
+    ![Open Airflow UI URL Codespaces](src/open_airflow_ui_codespaces.png)
 
-Deploy Your Project to Astronomer
-=================================
+5. Unpause all DAGs. Manually run the `produce_consume_treats` DAG to see the pipeline in action. Note that a random function is used to generate parts of the message to Kafka which determines if the `listen_for_mood` task will trigger the downstream `walking_your_pet` DAG. You might need to run the `produce_consume_treats` several times to see the full pipeline in action!
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://docs.astronomer.io/cloud/deploy-code/
+## Option 2: Use the Astro CLI
 
-Contact
-=======
+Download the [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli) to run Airflow locally in Docker. `astro` is the only package you will need to install.
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support
+1. Run `git clone https://github.com/astronomer/airflow-quickstart.git` on your computer to create a local clone of this repository.
+2. Install the Astro CLI by following the steps in the [Astro CLI documentation](https://docs.astronomer.io/astro/cli/install-cli). Docker Desktop/Docker Engine is a prerequisite, but you don't need in-depth Docker knowledge to run Airflow with the Astro CLI.
+3. Run `astro dev start` in your cloned repository.
+4. After your Astro project has started. View the Airflow UI at `localhost:8080`.
+5. Unpause all DAGs. Manually run the `produce_consume_treats` DAG to see the pipeline in action. Note that a random function is used to generate parts of the message to Kafka which determines if the `listen_for_mood` task will trigger the downstream `walking_your_pet` DAG. You might need to run the `produce_consume_treats` several times to see the full pipeline in action!
+
+# Resources
+
+- [Use Apache Kafka with Apache Airflow tutorial](https://docs.astronomer.io/learn/airflow-kafka).
+- [Apache Kafka Airflow provider documentation](https://airflow.apache.org/docs/apache-airflow-providers-apache-kafka/stable/index.html).
+- [Apache Kafka documentation](https://kafka.apache.org/documentation/). 
+- [Apache Airflow documentation](https://airflow.apache.org/docs/apache-airflow/stable/index.html).
+- [Airflow Quickstart](https://docs.astronomer.io/learn/airflow-quickstart).
