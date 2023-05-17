@@ -19,6 +19,9 @@ KAFKA_TOPIC = "my_topic"
 
 
 def prod_function(num_treats, pet_name):
+    """Produces `num_treats` messages containing the pet's name, a randomly picked
+    pet mood post treat and whether or not it was the last treat in a series."""
+
     for i in range(num_treats):
         final_treat = False
         pet_moode_post_treat = random.choices(
@@ -39,6 +42,8 @@ def prod_function(num_treats, pet_name):
 
 
 def consume_function(message, name):
+    "Takes in consumed messages and prints its contents to the logs."
+
     key = json.loads(message.key())
     message_content = json.loads(message.value())
     pet_name = message_content["pet_name"]
@@ -67,8 +72,8 @@ def produce_consume_treats():
     def get_pet_owner_name(your_name=None):
         return your_name
 
-    produce_hello = ProduceToTopicOperator(
-        task_id="produce_hello",
+    produce_treats = ProduceToTopicOperator(
+        task_id="produce_treats",
         kafka_config_id="kafka_default",
         topic=KAFKA_TOPIC,
         producer_function=prod_function,
@@ -79,26 +84,25 @@ def produce_consume_treats():
         poll_timeout=10,
     )
 
-    consume_hello = ConsumeFromTopicOperator(
-        task_id="consume_hello",
+    consume_treats = ConsumeFromTopicOperator(
+        task_id="consume_treats",
         kafka_config_id="kafka_default",
         topics=[KAFKA_TOPIC],
-        apply_function="produce_consume_treats.consume_function",
+        apply_function=consume_function,
         apply_function_kwargs={
             "name": "{{ ti.xcom_pull(task_ids='get_pet_owner_name')}}"
         },
         poll_timeout=20,
-        max_messages=20,
-        max_batch_size=20,
+        max_messages=1000
     )
 
     [
         get_your_pet_name(YOUR_PET_NAME),
         get_number_of_treats(NUMBER_OF_TREATS),
-    ] >> produce_hello
-    get_pet_owner_name(YOUR_NAME) >> consume_hello
+    ] >> produce_treats
+    get_pet_owner_name(YOUR_NAME) >> consume_treats
 
-    produce_hello >> consume_hello
+    produce_treats >> consume_treats
 
 
 produce_consume_treats()

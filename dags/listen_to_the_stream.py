@@ -48,8 +48,10 @@ def event_triggered_function(message, **context):
         trigger_dag_id="walking_my_pet",
         task_id=f"triggered_downstream_dag_{uuid.uuid4()}",
         wait_for_completion=True,  # wait for downstream DAG completion
-        conf={"pet_name": pet_name},
-        deferrable=True,  # use the deferrable version of the TDRO
+        conf={
+            "pet_name": pet_name
+        },  # this information will be passed to the downstream DAG
+        poke_interval=20,
     ).execute(context)
 
     print(f"The walk has concluded and {pet_name} is now happily taking a nap!")
