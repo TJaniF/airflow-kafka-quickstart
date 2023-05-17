@@ -15,7 +15,9 @@ import random
 # Change these variables
 YOUR_NAME = "Jani"
 YOUR_PET_NAME = "Nevermore"
-NUMBER_OF_TREATS = 5  # if your pet is very hungry, consider also changing `max_messages`
+NUMBER_OF_TREATS = (
+    5  # if your pet is very hungry, consider also changing `max_messages`
+)
 # in the `consume_treats` task
 
 # only change the topic name if you are using your own Kafka cluster/topic
@@ -31,7 +33,9 @@ def prod_function(num_treats, pet_name):
         pet_moode_post_treat = random.choices(
             # change these weights to make an event with zoomy or bouncy mood more
             # or less likely
-            ["content", "happy", "zoomy", "bouncy"], weights=[1, 1, 1, 1], k=1
+            ["content", "happy", "zoomy", "bouncy"],
+            weights=[1, 1, 1, 1],
+            k=1,
         )[0]
         if i + 1 == num_treats:
             final_treat = True
@@ -99,7 +103,7 @@ def produce_consume_treats():
             "name": "{{ ti.xcom_pull(task_ids='get_pet_owner_name')}}"
         },
         poll_timeout=20,
-        max_messages=1000
+        max_messages=1000,
     )
 
     [
