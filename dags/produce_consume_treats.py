@@ -30,7 +30,7 @@ def prod_function(num_treats, pet_name):
 
     for i in range(num_treats):
         final_treat = False
-        pet_moode_post_treat = random.choices(
+        pet_mood_post_treat = random.choices(
             # change these weights to make an event with zoomy or bouncy mood more
             # or less likely
             ["content", "happy", "zoomy", "bouncy"],
@@ -44,7 +44,7 @@ def prod_function(num_treats, pet_name):
             json.dumps(
                 {
                     "pet_name": pet_name,
-                    "pet_moode_post_treat": pet_moode_post_treat,
+                    "pet_mood_post_treat": pet_mood_post_treat,
                     "final_treat": final_treat,
                 }
             ),
@@ -53,13 +53,13 @@ def prod_function(num_treats, pet_name):
 
 def consume_function(message, name):
     "Takes in consumed messages and prints its contents to the logs."
-
+    print(message)
     key = json.loads(message.key())
     message_content = json.loads(message.value())
     pet_name = message_content["pet_name"]
-    pet_moode_post_treat = message_content["pet_moode_post_treat"]
+    pet_mood_post_treat = message_content["pet_mood_post_treat"]
     print(
-        f"Message #{key}: Hello {name}, your pet {pet_name} has consumed another treat and is now {pet_moode_post_treat}!"
+        f"Message #{key}: Hello {name}, your pet {pet_name} has consumed another treat and is now {pet_mood_post_treat}!"
     )
 
 
