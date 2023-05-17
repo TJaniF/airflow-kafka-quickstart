@@ -25,7 +25,9 @@ def prod_function(num_treats, pet_name):
     for i in range(num_treats):
         final_treat = False
         pet_moode_post_treat = random.choices(
-            ["content", "happy", "zoomy", "bouncy"], weights=[2, 2, 1, 1], k=1
+            # change these weights to make an event with zoomy or bouncy mood more
+            # or less likely
+            ["content", "happy", "zoomy", "bouncy"], weights=[1, 1, 1, 1], k=1
         )[0]
         if i + 1 == num_treats:
             final_treat = True
