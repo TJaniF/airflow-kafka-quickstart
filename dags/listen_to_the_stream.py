@@ -1,10 +1,10 @@
 """
-### DAG continuously listening to a Kafka topic for a specific message
+### Continuously Listen to a Kafka Topic for a Specific Message
 
-This DAG will always run and asynchronously monitor a Kafka topic for a message 
+This DAG will always run and asynchronously monitor a Kafka topic for a message
 which causes the funtion supplied to the `apply_function` parameter to return a value.
-If a value is returned by the `apply_function`, the `event_triggered_function` is 
-executed. Afterwards the task will go into a deferred state again. 
+If a value is returned by the `apply_function`, the `event_triggered_function` is
+executed. Afterwards the task will go into a deferred state again.
 """
 
 from airflow.decorators import dag
@@ -65,7 +65,7 @@ def event_triggered_function(message, **context):
     render_template_as_native_obj=True,
 )
 def listen_to_the_stream():
-    listen_for_mood = AwaitMessageTriggerFunctionSensor(
+    AwaitMessageTriggerFunctionSensor(
         task_id="listen_for_mood",
         kafka_config_id="kafka_listener",
         topics=[KAFKA_TOPIC],
