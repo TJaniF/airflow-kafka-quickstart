@@ -23,7 +23,7 @@ Run this Airflow project without installing anything locally.
 
     ![Fork repo and create a codespaces project](src/fork_and_codespaces.png)
 
-3. After creating the codespaces project the Astro CLI will automatically start up all necessary Airflow components as well as the streamlit app. This can take a few minutes. 
+3. After creating the codespaces project the Astro CLI will automatically start up all necessary Airflow components as well as the local Kafka cluster, using the instructions in the `docker-compose.override.yml`. This can take a few minutes. 
 4. Once the Airflow project has started access the Airflow UI by clicking on the **Ports** tab and opening the forward URL for port 8080.
 
     ![Open Airflow UI URL Codespaces](src/open_airflow_ui_codespaces.png)
