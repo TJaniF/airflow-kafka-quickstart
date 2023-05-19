@@ -1,5 +1,5 @@
 """
-### DAG which produces to and consumes from a Kafka cluster
+### Produce to and Consume from a Kafka Cluster
 
 This DAG will produce messages of several elements to a Kafka cluster and consume
 them.
@@ -86,10 +86,8 @@ def produce_consume_treats():
         kafka_config_id="kafka_default",
         topic=KAFKA_TOPIC,
         producer_function=prod_function,
-        producer_function_args=["{{ ti.xcom_pull(task_ids='get_number_of_treats')}}"],
-        producer_function_kwargs={
-            "pet_name": "{{ ti.xcom_pull(task_ids='get_your_pet_name')}}"
-        },
+        producer_function_args=[get_number_of_treats(NUMBER_OF_TREATS)],
+        producer_function_kwargs={"pet_name": get_your_pet_name(YOUR_PET_NAME)},
         poll_timeout=10,
     )
 
@@ -98,18 +96,10 @@ def produce_consume_treats():
         kafka_config_id="kafka_default",
         topics=[KAFKA_TOPIC],
         apply_function=consume_function,
-        apply_function_kwargs={
-            "name": "{{ ti.xcom_pull(task_ids='get_pet_owner_name')}}"
-        },
+        apply_function_kwargs={"name": get_pet_owner_name(YOUR_NAME)},
         poll_timeout=20,
         max_messages=1000,
     )
-
-    [
-        get_your_pet_name(YOUR_PET_NAME),
-        get_number_of_treats(NUMBER_OF_TREATS),
-    ] >> produce_treats
-    get_pet_owner_name(YOUR_NAME) >> consume_treats
 
     produce_treats >> consume_treats
 

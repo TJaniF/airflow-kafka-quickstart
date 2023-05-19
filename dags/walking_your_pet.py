@@ -1,7 +1,7 @@
 """
-### Simple DAG that runs one task with params
+### Run a Simple DAG with Params
 
-This DAG uses one string type param and uses it in a python decorated task.
+This DAG uses one string type param and uses it in a TaskFlow task.
 """
 
 from airflow.decorators import dag, task
