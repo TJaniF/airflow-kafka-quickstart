@@ -24,7 +24,7 @@ Run this Airflow project without installing anything locally.
     ![Fork repo and create a codespaces project](src/fork_and_codespaces.png)
 
 3. After creating the codespaces project the Astro CLI will automatically start up all necessary Airflow components as well as the local Kafka cluster, using the instructions in the `docker-compose.override.yml`. This can take a few minutes. 
-4. Once the Airflow project has started access the Airflow UI by clicking on the **Ports** tab and opening the forward URL for port 8080.
+4. Once the Airflow project has started access the Airflow UI by clicking on the **Ports** tab and opening the forward URL for port 8080. You can log in using `admin` as the username and `admin` as the password.
 
     ![Open Airflow UI URL Codespaces](src/open_airflow_ui_codespaces.png)
 
@@ -37,7 +37,7 @@ Download the [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli) to ru
 1. Run `git clone https://github.com/astronomer/airflow-quickstart.git` on your computer to create a local clone of this repository.
 2. Install the Astro CLI by following the steps in the [Astro CLI documentation](https://docs.astronomer.io/astro/cli/install-cli). Docker Desktop/Docker Engine is a prerequisite, but you don't need in-depth Docker knowledge to run Airflow with the Astro CLI.
 3. Run `astro dev start` in your cloned repository.
-4. After your Astro project has started. View the Airflow UI at `localhost:8080`.
+4. After your Astro project has started. View the Airflow UI at `localhost:8080`. You can log in using `admin` as the username and `admin` as the password.
 5. Unpause all DAGs. Manually run the `produce_consume_treats` DAG to see the pipeline in action. Note that a random function is used to generate parts of the message to Kafka which determines if the `listen_for_mood` task will trigger the downstream `walking_your_pet` DAG. You might need to run the `produce_consume_treats` several times to see the full pipeline in action!
 
 # Resources
